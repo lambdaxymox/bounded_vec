@@ -381,10 +381,10 @@ where
     /// # assert_eq!(original_vec.capacity(), original_capacity);
     /// #
     ///
-    /// // Prevent running `opaque_vec`'s destructor to completely control the allocation.
+    /// // Prevent running `original_vec`'s destructor to completely control the allocation.
     /// let mut vec = mem::ManuallyDrop::new(original_vec);
     ///
-    /// // Destructure `opaque_vec` into its constituent parts.
+    /// // Destructure `original_vec` into its constituent parts.
     /// let ptr: NonNull<i32> = vec.as_non_null();
     /// let length = vec.len();
     /// let capacity = vec.capacity();
@@ -764,10 +764,10 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// # assert_eq!(original_vec.capacity(), original_capacity);
     /// #
     ///
-    /// // Prevent running `opaque_vec`'s destructor to completely control the allocation.
+    /// // Prevent running `original_vec`'s destructor to completely control the allocation.
     /// let mut vec = mem::ManuallyDrop::new(original_vec);
     ///
-    /// // Destructure `opaque_vec` into its constituent parts.
+    /// // Destructure `original_vec` into its constituent parts.
     /// let ptr: NonNull<i32> = vec.as_non_null();
     /// let length = vec.len();
     /// let capacity = vec.capacity();
@@ -1000,7 +1000,7 @@ where
     /// let alloc: &Global = vec.allocator();
     /// ```
     #[inline]
-    pub const fn allocator(&self) -> &A {
+    pub fn allocator(&self) -> &A {
         Box::allocator(&self.inner)
     }
 }
@@ -4030,7 +4030,7 @@ where
 {
     fn default() -> Self {
         Self {
-            inner: Box::default(),
+            inner: Box::new_uninit_slice_in(0, A::default()),
             length: 0,
         }
     }
@@ -4187,10 +4187,10 @@ impl<T, const N: usize> From<[T; N]> for BoundedVec<T, alloc::Global> {
     #[inline]
     fn from(array: [T; N]) -> BoundedVec<T, alloc::Global> {
         let length = array.len();
-        let boxed = Box::slice(Box::new(array));
-        let raw_ptr = Box::into_raw(boxed).cast::<MaybeUninit<T>>();
+        let mut me = ManuallyDrop::new(Box::new(array));
+        let data = me.as_mut_ptr() as *mut MaybeUninit<T>;
         let inner = unsafe {
-            Box::from_raw(slice::from_raw_parts_mut(raw_ptr, length))
+            Box::from_raw(slice::from_raw_parts_mut(data, length))
         };
 
         Self { inner, length, }

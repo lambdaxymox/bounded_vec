@@ -1,0 +1,21 @@
+mod common;
+
+mod spec_clear;
+mod spec_clone;
+mod spec_extend_from_slice;
+mod spec_extract_if;
+mod spec_from_array;
+mod spec_from_bounded_vec;
+mod spec_from_slice;
+mod spec_into_iter;
+mod spec_len;
+mod spec_pop_empty;
+mod spec_push_pop;
+mod spec_replace_insert;
+mod spec_replace_insert_same_place;
+mod spec_shift_insert;
+mod spec_shift_insert_same_index;
+mod spec_shift_insert_shift_remove;
+mod spec_shift_remove;
+mod spec_swap_remove;
+mod spec_truncate;

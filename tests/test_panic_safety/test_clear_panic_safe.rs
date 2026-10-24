@@ -5,6 +5,10 @@ use std::panic;
 use std::panic::AssertUnwindSafe;
 use std::rc::Rc;
 
+#[cfg(feature = "nightly")]
+use std::alloc;
+
+#[cfg(not(feature = "nightly"))]
 use allocator_api2::alloc;
 
 #[derive(Clone, Debug)]

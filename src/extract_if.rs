@@ -9,14 +9,8 @@ use crate::vec::BoundedVec;
 #[cfg(feature = "nightly")]
 use alloc_crate::alloc;
 
-#[cfg(feature = "nightly")]
-use alloc_crate::boxed::Box;
-
 #[cfg(not(feature = "nightly"))]
 use allocator_api2::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::boxed::Box;
 
 use core::fmt;
 use core::ops;
