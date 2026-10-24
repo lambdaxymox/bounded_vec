@@ -285,7 +285,7 @@ fn test_bounded_vec_clear1() {
 
 #[test]
 fn test_bounded_vec_clear2() {
-    let mut vec: BoundedVec<i32, alloc::Global> = BoundedVec::from_iter([444_i32, 127_i32, 780_i32, 59_i32, 920_i32, 496_i32]);
+    let mut vec: BoundedVec<i32, alloc::Global> = BoundedVec::from([444_i32, 127_i32, 780_i32, 59_i32, 920_i32, 496_i32]);
 
     assert_eq!(vec.len(), 6);
     assert!(!vec.is_empty());
@@ -417,7 +417,7 @@ fn test_bounded_vec_slice_from_mut2() {
 
 #[test]
 fn test_bounded_vec_indexing() {
-    let vec = BoundedVec::from_iter([10_i32, 20_i32, 30_i32]);
+    let vec = BoundedVec::from([10_i32, 20_i32, 30_i32]);
 
     assert_eq!(vec[0], 10_i32);
     assert_eq!(vec[1], 20_i32);
@@ -444,7 +444,7 @@ fn test_bounded_vec_indexing_out_of_bounds1() {
 #[test]
 #[should_panic]
 fn test_bounded_vec_indexing_out_of_bounds2() {
-    let vec: BoundedVec<i32, alloc::Global> = BoundedVec::from_iter([10_i32]);
+    let vec: BoundedVec<i32, alloc::Global> = BoundedVec::from([10_i32]);
     let _ = vec[1];
 
     assert!(true);
@@ -453,7 +453,7 @@ fn test_bounded_vec_indexing_out_of_bounds2() {
 #[test]
 #[should_panic]
 fn test_bounded_vec_indexing_out_of_bounds3() {
-    let vec: BoundedVec<i32, alloc::Global> = BoundedVec::from_iter([10_i32, 20_i32]);
+    let vec: BoundedVec<i32, alloc::Global> = BoundedVec::from([10_i32, 20_i32]);
     let _ = vec[2];
 
     assert!(true);
@@ -462,7 +462,7 @@ fn test_bounded_vec_indexing_out_of_bounds3() {
 #[test]
 #[should_panic]
 fn test_bounded_vec_indexing_out_of_bounds4() {
-    let vec: BoundedVec<i32, alloc::Global> = BoundedVec::from_iter([10_i32, 20_i32, 30_i32]);
+    let vec: BoundedVec<i32, alloc::Global> = BoundedVec::from([10_i32, 20_i32, 30_i32]);
     let _ = vec[3];
 
     assert!(true);
@@ -471,7 +471,7 @@ fn test_bounded_vec_indexing_out_of_bounds4() {
 #[test]
 #[should_panic]
 fn test_bounded_vec_slice_out_of_bounds1() {
-    let vec = BoundedVec::from_iter([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
+    let vec = BoundedVec::from([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
     let _ = &vec[!0..];
 
     assert!(true);
@@ -480,7 +480,7 @@ fn test_bounded_vec_slice_out_of_bounds1() {
 #[test]
 #[should_panic]
 fn test_bounded_vec_slice_out_of_bounds2() {
-    let vec = BoundedVec::from_iter([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
+    let vec = BoundedVec::from([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
     let _ = &vec[..7];
 
     assert!(true);
@@ -489,7 +489,7 @@ fn test_bounded_vec_slice_out_of_bounds2() {
 #[test]
 #[should_panic]
 fn test_bounded_vec_slice_out_of_bounds3() {
-    let vec = BoundedVec::from_iter([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
+    let vec = BoundedVec::from([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
     let _ = &vec[!0..5];
 
     assert!(true);
@@ -498,7 +498,7 @@ fn test_bounded_vec_slice_out_of_bounds3() {
 #[test]
 #[should_panic]
 fn test_bounded_vec_slice_out_of_bounds4() {
-    let vec = BoundedVec::from_iter([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
+    let vec = BoundedVec::from([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
     let _ = &vec[1..7];
 
     assert!(true);
@@ -507,7 +507,7 @@ fn test_bounded_vec_slice_out_of_bounds4() {
 #[test]
 #[should_panic]
 fn test_bounded_vec_slice_out_of_bounds5() {
-    let vec = BoundedVec::from_iter([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
+    let vec = BoundedVec::from([1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32]);
     let _ = &vec[3..2];
 
     assert!(true);
