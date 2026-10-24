@@ -37,13 +37,12 @@ use core::slice;
 ///   memory allocation in units of elements.
 /// * length --- the number of elements currently stored in the vector.
 ///
-/// # Capacity And Reallocation
+/// # Capacity And Length
 ///
 /// The **capacity** of a vector is the number of elements that can be stored in the vector inside
-/// the same allocation. That is, it is the number of elements the vector can store without
-/// reallocating memory. This should not be confused with the **length** of the vector, which is
-/// the number of elements currently stored in the vector. The length of a vector is always less
-/// than or equal to its capacity.
+/// the same allocation. That is, it is the number of elements the vector can store. This should
+/// not be confused with the **length** of the vector, which is the number of elements currently
+/// stored in the vector. The length of a vector is always less than or equal to its capacity.
 ///
 /// # Examples
 ///

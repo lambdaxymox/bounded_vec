@@ -2,7 +2,6 @@
 name = "bounded_vec"
 version = "0.1.0"
 edition = "2024"
-publish = false
 
 [features]
 default = ["std"]
@@ -11,3 +10,7 @@ nightly = []
 
 [dependencies]
 allocator-api2 = { version = "0.4", default-features = false, features = ["alloc"] }
+
+[dev-dependencies]
+criterion = { version = "0.8.2" }
+proptest = { version = "1.12.0" }
