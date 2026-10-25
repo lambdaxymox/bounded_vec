@@ -1,7 +1,20 @@
 [package]
 name = "bounded_vec"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
+authors = ["LambdaXymox <lambda.xymox@gmail.com>"]
+description = "A library for working with bounded capacity growable arrays."
+categories = [
+    "data-structures",
+    "no-std",
+]
+keywords = [
+    "containers",
+    "no_std",
+]
+license = "Apache-2.0 OR MIT"
+readme = "README.md"
+repository = "https://github.com/lambdaxymox/bounded_vec"
 
 [features]
 default = ["std"]
