@@ -1,7 +1,6 @@
 use crate::spec_bounded_vec::common::strategy_bounded_vec_max_len;
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use std::string::String;
 
@@ -15,8 +14,8 @@ use proptest::prelude::*;
 
 fn prop_clear_as_slice<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let expected = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
     let result = {
@@ -32,8 +31,8 @@ where
 
 fn prop_clear_is_empty<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut result = values.clone();
     result.clear();
@@ -45,8 +44,8 @@ where
 
 fn prop_clear_len<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut result = values.clone();
     result.clear();

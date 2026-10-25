@@ -4,7 +4,6 @@ use crate::spec_bounded_vec::common::{
 };
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use std::string::String;
 
@@ -18,8 +17,8 @@ use proptest::prelude::*;
 
 fn prop_swap_remove_end<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = values.clone();
 
@@ -35,13 +34,13 @@ where
 
 fn prop_swap_remove_start<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     fn expected<T, A>(values: &[T], alloc: &A) -> BoundedVec<T, A>
     where
-        T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-        A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+        T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+        A: alloc::Allocator + Clone + Default + fmt::Debug,
     {
         let mut vec = BoundedVec::with_capacity_in(values.len(), alloc.clone());
         for value in values.iter().take(values.len() - 1).cloned() {
@@ -72,8 +71,8 @@ where
 
 fn prop_swap_remove_get_from_end<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = values.clone();
 
@@ -90,8 +89,8 @@ where
 
 fn prop_swap_remove_len<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let values_vec = values.clone();
 

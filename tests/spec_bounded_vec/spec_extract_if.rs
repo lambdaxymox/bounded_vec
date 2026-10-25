@@ -1,7 +1,6 @@
 use crate::spec_bounded_vec::common::strategy_bounded_vec_max_len;
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use std::string::String;
 
@@ -16,8 +15,8 @@ use proptest::prelude::*;
 fn prop_extract_if_len<F, T, A>(values: BoundedVec<T, A>, filter: F) -> Result<(), TestCaseError>
 where
     F: Fn(&T) -> bool,
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut remaining = values.clone();
     let mut extracted = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
@@ -33,8 +32,8 @@ where
 fn prop_extract_if_extracted<F, T, A>(values: BoundedVec<T, A>, filter: F) -> Result<(), TestCaseError>
 where
     F: Fn(&T) -> bool,
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut remaining = values.clone();
     let mut extracted = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
@@ -52,8 +51,8 @@ where
 fn prop_extract_if_remaining<F, T, A>(values: BoundedVec<T, A>, filter: F) -> Result<(), TestCaseError>
 where
     F: Fn(&T) -> bool,
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut remaining = values.clone();
     let mut extracted = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());

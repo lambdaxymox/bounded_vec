@@ -1,6 +1,5 @@
 use bounded_vec::BoundedVec;
 
-use core::any;
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -38,7 +37,7 @@ impl Drop for DropCounter {
 
 fn create_drop_counter_vec_in<A>(len: usize, alloc: A) -> (DropCounter, BoundedVec<(usize, DropCounter), A>)
 where
-    A: any::Any + alloc::Allocator + Send + Sync + Clone,
+    A: alloc::Allocator + Clone,
 {
     let drop_counter = DropCounter::new(Rc::new(RefCell::new(0)));
     let mut vec = BoundedVec::with_capacity_in(len, alloc);
@@ -51,7 +50,7 @@ where
 
 fn run_test_bounded_vec_retain_true<A>(length: usize, alloc: A)
 where
-    A: any::Any + alloc::Allocator + Send + Sync + Clone,
+    A: alloc::Allocator + Clone,
 {
     let (drop_counter, mut vec) = create_drop_counter_vec_in(length, alloc);
     let expected = 0;
@@ -64,7 +63,7 @@ where
 
 fn run_test_bounded_vec_retain_false<A>(length: usize, alloc: A)
 where
-    A: any::Any + alloc::Allocator + Send + Sync + Clone,
+    A: alloc::Allocator + Clone,
 {
     let (drop_counter, mut vec) = create_drop_counter_vec_in(length, alloc);
     let expected = vec.len();
@@ -77,7 +76,7 @@ where
 
 fn run_test_bounded_vec_retain_even<A>(length: usize, alloc: A)
 where
-    A: any::Any + alloc::Allocator + Send + Sync + Clone,
+    A: alloc::Allocator + Clone,
 {
     fn count_even_indices(slice: &[(usize, DropCounter)]) -> usize {
         slice.iter().fold(0, |acc, (i, _)| if i % 2 == 0 { acc + 1 } else { acc })
@@ -94,7 +93,7 @@ where
 
 fn run_test_bounded_vec_retain_odd<A>(length: usize, alloc: A)
 where
-    A: any::Any + alloc::Allocator + Send + Sync + Clone,
+    A: alloc::Allocator + Clone,
 {
     fn count_odd_indices(slice: &[(usize, DropCounter)]) -> usize {
         slice.iter().fold(0, |acc, (i, _)| if i % 2 != 0 { acc + 1 } else { acc })

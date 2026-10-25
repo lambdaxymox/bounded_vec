@@ -1,7 +1,6 @@
 use crate::spec_bounded_vec::common::strategy_bounded_vec_max_len;
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use std::string::String;
 
@@ -15,8 +14,8 @@ use proptest::prelude::*;
 
 fn prop_truncate_as_slice_length_greater_than_or_equal_to<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let base_vec = values.clone();
     let min_len = values.len();
@@ -37,8 +36,8 @@ where
 
 fn prop_truncate_as_slice_length_less_than_or_equal_to<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let base_vec = values.clone();
     for len in 0..values.len() {
@@ -57,8 +56,8 @@ where
 
 fn prop_truncate_len_length_greater_than_or_equal_to<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let base_vec = values.clone();
     let min_len = values.len();
@@ -79,8 +78,8 @@ where
 
 fn prop_truncate_len_length_less_than_or_equal_to<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let base_vec = values.clone();
     for len in 0..values.len() {

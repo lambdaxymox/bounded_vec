@@ -1,7 +1,6 @@
 use crate::spec_bounded_vec::common::strategy_alloc;
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use std::string::String;
 
@@ -15,15 +14,15 @@ use proptest::prelude::*;
 
 fn strategy_single_value<T>() -> impl Strategy<Value = T>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
 {
     any::<T>()
 }
 
 fn prop_replace_insert_contains_same_index1<T, A>(value: T, alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(10, alloc);
 
@@ -38,8 +37,8 @@ where
 
 fn prop_replace_insert_contains_same_index2<T, A>(initial_value: T, value: T, alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(10, alloc);
     vec.replace_insert(0, initial_value.clone());
@@ -57,8 +56,8 @@ where
 
 fn prop_replace_insert_get_same_index1<T, A>(value: T, alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(10, alloc);
     vec.replace_insert(0, value.clone());
@@ -73,8 +72,8 @@ where
 
 fn prop_replace_insert_get_same_index2<T, A>(initial_value: T, value: T, alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(10, alloc);
     vec.replace_insert(0, initial_value.clone());
@@ -95,8 +94,8 @@ where
 }
 fn prop_replace_insert_len_same_index<T, A>(value: T, alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(10, alloc);
 

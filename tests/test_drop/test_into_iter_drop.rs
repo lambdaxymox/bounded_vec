@@ -1,6 +1,5 @@
 use bounded_vec::BoundedVec;
 
-use core::any;
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -38,7 +37,7 @@ impl Drop for DropCounter {
 
 fn create_drop_counter_vec_in<A>(len: usize, alloc: A) -> (DropCounter, BoundedVec<DropCounter, A>)
 where
-    A: any::Any + alloc::Allocator + Send + Sync + Clone,
+    A: alloc::Allocator + Clone,
 {
     let drop_counter = DropCounter::new(Rc::new(RefCell::new(0)));
     let mut vec = BoundedVec::with_capacity_in(len, alloc);
@@ -51,7 +50,7 @@ where
 
 fn run_test_bounded_vec_into_iter_drop<A>(length: usize, alloc: A)
 where
-    A: any::Any + alloc::Allocator + Send + Sync + Clone,
+    A: alloc::Allocator + Clone,
 {
     let (drop_counter, vec) = create_drop_counter_vec_in(length, alloc);
     let _ = vec.into_iter();
@@ -64,7 +63,7 @@ where
 
 fn run_test_bounded_vec_into_iter_take_then_drop<A>(length: usize, take_count: usize, alloc: A)
 where
-    A: any::Any + alloc::Allocator + Send + Sync + Clone,
+    A: alloc::Allocator + Clone,
 {
     let (drop_counter, vec) = create_drop_counter_vec_in(length, alloc.clone());
     let mut taken_vec = BoundedVec::with_capacity_in(take_count, alloc.clone());

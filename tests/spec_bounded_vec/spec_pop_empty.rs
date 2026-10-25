@@ -1,7 +1,6 @@
 use crate::spec_bounded_vec::common::strategy_alloc;
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use std::string::String;
 
@@ -15,8 +14,8 @@ use proptest::prelude::*;
 
 fn prop_pop_empty1<T, A>(alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec: BoundedVec<T, A> = BoundedVec::with_capacity_in(10, alloc);
 
@@ -27,8 +26,8 @@ where
 
 fn prop_pop_empty2<T, A>(alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec: BoundedVec<T, A> = BoundedVec::with_capacity_in(10, alloc);
 
@@ -41,8 +40,8 @@ where
 
 fn prop_pop_empty_is_empty1<T, A>(alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec: BoundedVec<T, A> = BoundedVec::with_capacity_in(10, alloc);
 
@@ -57,8 +56,8 @@ where
 
 fn prop_pop_empty_is_empty2<T, A>(alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec: BoundedVec<T, A> = BoundedVec::with_capacity_in(10, alloc);
 

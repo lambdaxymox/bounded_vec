@@ -1,7 +1,6 @@
 use crate::spec_bounded_vec::common::strategy_bounded_vec_max_len;
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use std::string::String;
 
@@ -15,13 +14,13 @@ use proptest::prelude::*;
 
 fn prop_shift_insert_start<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     fn expected<T, A>(values: &BoundedVec<T, A>) -> BoundedVec<T, A>
     where
-        T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-        A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+        T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+        A: alloc::Allocator + Clone + Default + fmt::Debug,
     {
         let mut vec = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
         for value in values.iter().rev().cloned() {
@@ -33,8 +32,8 @@ where
 
     fn result<T, A>(values: &BoundedVec<T, A>) -> BoundedVec<T, A>
     where
-        T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-        A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+        T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+        A: alloc::Allocator + Clone + Default + fmt::Debug,
     {
         let mut vec = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
         for value in values.iter().cloned() {
@@ -57,8 +56,8 @@ where
 
 fn prop_shift_insert_len<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
     for (i, value) in values.iter().cloned().enumerate() {
@@ -75,8 +74,8 @@ where
 
 fn prop_shift_insert_get<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
     for (i, value) in values.iter().cloned().enumerate() {
@@ -95,8 +94,8 @@ where
 
 fn prop_shift_insert_end<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
 
@@ -114,8 +113,8 @@ where
 
 fn prop_shift_insert_contains<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
 

@@ -4,7 +4,6 @@ use crate::spec_bounded_vec::common::{
 };
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use std::string::String;
 
@@ -18,15 +17,15 @@ use proptest::prelude::*;
 
 fn strategy_single_value<T>() -> impl Strategy<Value = T>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
 {
     any::<T>()
 }
 
 fn prop_shift_insert_contains_same_index1<T, A>(value: T, alloc: A) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec = BoundedVec::with_capacity_in(10, alloc);
 
@@ -41,8 +40,8 @@ where
 
 fn prop_shift_insert_contains_same_index2<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let mut vec: BoundedVec<T, A> = BoundedVec::with_capacity_in(values.capacity(), values.allocator().clone());
     for value in values.iter() {

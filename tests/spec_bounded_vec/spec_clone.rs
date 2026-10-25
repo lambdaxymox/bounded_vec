@@ -1,7 +1,6 @@
 use crate::spec_bounded_vec::common::strategy_bounded_vec_max_len;
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use core::mem;
 use std::string::String;
@@ -16,8 +15,8 @@ use proptest::prelude::*;
 
 fn prop_clone_as_slice<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let cloned_values = values.clone();
 
@@ -31,8 +30,8 @@ where
 
 fn prop_clone_occupy_disjoint_memory_locations<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let cloned_values = values.clone();
 
@@ -49,8 +48,8 @@ where
 
 fn prop_clone_occupy_disjoint_memory_regions<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let cloned_values = values.clone();
 
@@ -72,8 +71,8 @@ where
 
 fn prop_clone_len<T, A>(values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     let cloned_values = values.clone();
 

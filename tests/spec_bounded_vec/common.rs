@@ -1,6 +1,5 @@
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use core::ops;
 use std::string::{
@@ -18,8 +17,8 @@ use proptest::prelude::*;
 
 pub fn shift_insert_slice<T, A>(values: &[T], slice: &[T], start: usize, alloc: A) -> BoundedVec<T, A>
 where
-    T: any::Any + Clone,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone,
+    T: Clone,
+    A: alloc::Allocator + Clone,
 {
     let mut vec = BoundedVec::with_capacity_in(values.len() + slice.len(), alloc);
     for value in values.iter().cloned() {
@@ -33,7 +32,7 @@ where
     vec
 }
 
-pub trait SingleBoundedValue: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary {
+pub trait SingleBoundedValue: PartialEq + Clone + Default + fmt::Debug + Arbitrary {
     fn bounded_any() -> impl Strategy<Value = Self>;
 }
 
@@ -75,29 +74,29 @@ impl SingleBoundedValue for String {
 
 pub fn strategy_bounded_value<T>() -> impl Strategy<Value = T>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
 {
     <T as SingleBoundedValue>::bounded_any()
 }
 
 pub fn strategy_array<T, const N: usize>() -> impl Strategy<Value = [T; N]>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
 {
     prop::array::uniform(strategy_bounded_value::<T>())
 }
 
 pub fn strategy_alloc<A>() -> impl Strategy<Value = A>
 where
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     Just(A::default())
 }
 
 pub fn strategy_bounded_vec_len<T, A>(length: usize) -> impl Strategy<Value = BoundedVec<T, A>>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     (
         proptest::collection::vec(strategy_bounded_value::<T>(), length),
@@ -113,16 +112,16 @@ where
 
 pub fn strategy_bounded_vec_max_len<T, A>(max_length: usize) -> impl Strategy<Value = BoundedVec<T, A>>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     (0..=max_length).prop_flat_map(move |length| strategy_bounded_vec_len(length))
 }
 
 pub fn strategy_bounded_vec_max_len_nonempty<T, A>(max_length: usize) -> impl Strategy<Value = BoundedVec<T, A>>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
-    A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug + Arbitrary + SingleBoundedValue,
+    A: alloc::Allocator + Clone + Default + fmt::Debug,
 {
     fn clamped_interval(max_length: usize) -> ops::RangeInclusive<usize> {
         if max_length == 0 { 1..=1 } else { 1..=max_length }

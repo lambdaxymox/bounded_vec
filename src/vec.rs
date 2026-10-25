@@ -146,7 +146,7 @@ where
             return Self { inner, length: 0 };
         }
 
-        let layout = core::alloc::Layout::array::<T>(capacity).expect("invalid layout");
+        let layout = alloc::Layout::array::<T>(capacity).expect("invalid layout");
         let raw_ptr = alloc.allocate(layout).expect("`BoundedVec` allocation failed");
 
         let slice_ptr = core::ptr::slice_from_raw_parts_mut(raw_ptr.as_ptr().cast::<MaybeUninit<T>>(), capacity);
@@ -2496,7 +2496,7 @@ where
     /// This method is safe to call if the following conditions hold:
     ///
     /// * The length `new_len` is less than or equal to `self.capacity()`.
-    /// * The elements in the subslice `[self.len(), new_len)` must be initialized.
+    /// * The elements in the subslice `[self.len(), new_len()` must be initialized.
     ///
     /// # Examples
     ///
@@ -2931,7 +2931,7 @@ where
     ///
     /// * If `new_len > len`, the vector is extended by the difference, with each additional slot
     ///   filled with `value`.
-    /// * If `new_len < len`, the vector is truncated. Each entry in `[new_len, len)` is dropped by
+    /// * If `new_len < len`, the vector is truncated. Each entry in `[new_len, len()` is dropped by
     ///   this method.
     ///
     /// If you need more flexibility (or want to rely on [`Default`] instead of
@@ -4077,7 +4077,7 @@ where
 
 impl<T, I, A> ops::Index<I> for BoundedVec<T, A>
 where
-    I: core::slice::SliceIndex<[T]>,
+    I: slice::SliceIndex<[T]>,
     A: alloc::Allocator,
 {
     type Output = I::Output;
@@ -4090,7 +4090,7 @@ where
 
 impl<T, I, A> ops::IndexMut<I> for BoundedVec<T, A>
 where
-    I: core::slice::SliceIndex<[T]>,
+    I: slice::SliceIndex<[T]>,
     A: alloc::Allocator,
 {
     #[inline]

@@ -1,7 +1,6 @@
 use crate::spec_bounded_vec::common::strategy_array;
 use bounded_vec::BoundedVec;
 
-use core::any;
 use core::fmt;
 use std::string::String;
 
@@ -9,7 +8,7 @@ use proptest::prelude::*;
 
 fn prop_from_array_as_slice<const N: usize, T>(expected: [T; N]) -> Result<(), TestCaseError>
 where
-    T: any::Any + PartialEq + Clone + Default + fmt::Debug,
+    T: PartialEq + Clone + Default + fmt::Debug,
 {
     let vec = BoundedVec::from(expected.clone());
     let result = vec.as_slice();
