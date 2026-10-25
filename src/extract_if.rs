@@ -18,8 +18,7 @@ use core::slice;
 
 /// An iterator that extracts the elements of a vector that satisfy a predicate.
 ///
-/// Extracting iterators are created by the [`TypeProjectedVec::extract_if`] and
-/// [`TypeErasedVec::extract_if`] methods.
+/// Extracting iterators are created by the [`BoundedVec::extract_if`] method.
 ///
 /// # Examples
 ///

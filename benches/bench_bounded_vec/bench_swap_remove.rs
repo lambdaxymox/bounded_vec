@@ -13,10 +13,10 @@ use alloc_crate::alloc;
 #[cfg(not(feature = "nightly"))]
 use allocator_api2::alloc;
 
-fn bench_type_projected_vec_swap_remove(c: &mut Criterion) {
+fn bench_bounded_vec_swap_remove(c: &mut Criterion) {
     let dummy_data = 0_i32;
 
-    c.bench_function("type_projected_vec_swap_remove", |b| {
+    c.bench_function("bounded_vec_swap_remove", |b| {
         b.iter_batched(
             || {
                 let mut vec = BoundedVec::with_capacity(1000);
@@ -33,4 +33,4 @@ fn bench_type_projected_vec_swap_remove(c: &mut Criterion) {
     });
 }
 
-criterion_group!(bench_swap_remove, bench_type_projected_vec_swap_remove);
+criterion_group!(bench_swap_remove, bench_bounded_vec_swap_remove);

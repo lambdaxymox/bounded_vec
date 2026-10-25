@@ -30,7 +30,7 @@ use core::slice;
 ///
 /// This type is similar to [`std::Vec`], but it has a fixed capacity.
 ///
-/// A bounded is parameterized by the following parameters:
+/// A bounded vector is parameterized by the following parameters:
 ///
 /// * a pointer to a memory allocation.
 /// * capacity --- the number of elements the vector can store, or equivalently, the size of the
@@ -87,8 +87,8 @@ where
     /// capacity.
     ///
     /// The vector will be able to hold at most `capacity` elements. The method will allocate
-    /// **exactly** `capacity` elements. If `capacity` is zero, the constructor does not allocate
-    /// memory.
+    /// space for **exactly** `capacity` elements. If `capacity` is zero, the constructor does not
+    /// allocate memory.
     ///
     /// Note that while the returned vector will have a **capacity** of at least `capacity`, it
     /// will have a **length** of zero, because no elements have been pushed to the vector yet.
@@ -498,8 +498,8 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// Constructs a new empty bounded vector using a specific capacity.
     ///
     /// The vector will be able to hold at most `capacity` elements. The method will allocate
-    /// **exactly** `capacity` elements. If `capacity` is zero, the constructor does not allocate
-    /// memory.
+    /// space for **exactly** `capacity` elements. If `capacity` is zero, the constructor does not
+    /// allocate memory.
     ///
     /// Note that while the returned vector will have a **capacity** of at least `capacity`, it
     /// will have a **length** of zero, because no elements have been pushed to the vector yet.
@@ -1336,7 +1336,7 @@ where
     #[inline]
     #[must_use]
     pub fn as_non_null(&mut self) -> NonNull<T> {
-        // SAFETY: A `BoundedVec` always holds a non-null pointer.
+        // SAFETY: A bounded vector always holds a non-null pointer.
         unsafe {
             let ptr = NonNull::new_unchecked(Box::as_mut_ptr(&mut self.inner));
 
@@ -1614,12 +1614,16 @@ where
     /// This method satisfies:
     ///
     /// ```text
-    /// { true }
+    /// { vec_before.len() < vec_before.capacity() }
     /// vec.push(value)
     /// {
     ///     vec_after.len() = vec_before.len() + 1
     ///     ∧ (∀ i ∈ [0, vec_before.len()). vec_after[i] = vec_before[i])
     /// }
+    ///
+    /// { vec_before.len() = vec_before.capacity() }
+    /// vec.push(value)
+    /// { ⊥ }
     /// ```
     ///
     /// where `{P} S {Q}` is the Hoare triple indicating how this method acts on `vec`.
@@ -1630,7 +1634,7 @@ where
     ///
     /// # Panics
     ///
-    /// This method panics if `vec.len() == vec.capacity()` when it is called.
+    /// This method panics if `self.len() == self.capacity()`.
     ///
     /// # Examples
     ///
@@ -1675,7 +1679,7 @@ where
     /// Appends an element to a bounded vector if there is sufficient spare capacity.
     /// Otherwise, an error is returned with the element.
     ///
-    /// Unlike [`push`], this method will not panic reallocate when there's insufficient capacity.
+    /// Unlike [`push`], this method will not panic when there's insufficient capacity.
     ///
     /// # Formal Properties (Optional Section)
     ///
@@ -1997,6 +2001,22 @@ where
     ///     ∧ vec_after[index] = value
     ///     ∧ (∀ i ∈ [0, vec_before.len()). i ≠ index ⇒ vec_after[i] = vec_before[i])
     /// }
+    ///
+    /// { index = vec_before.len() ∧ vec_before.len() < vec_before.capacity() }
+    /// vec.replace_insert(index, value)
+    /// {
+    ///     vec_after.len() = vec_before.len() + 1
+    ///     ∧ vec_after[index] = value
+    ///     ∧ (∀ i ∈ [0, vec_before.len()). vec_after[i] = vec_before[i])
+    /// }
+    ///
+    /// { index = vec_before.len() ∧ vec_before.len() = vec_before.capacity() }
+    /// vec.replace_insert(index, value)
+    /// { ⊥ }
+    ///
+    /// { index > vec_before.len() }
+    /// vec.replace_insert(index, value)
+    /// { ⊥ }
     /// ```
     ///
     /// where `{P} S {Q}` is the Hoare triple indicating how this method acts on `vec`.
@@ -2008,7 +2028,7 @@ where
     /// # Panics
     ///
     /// This method panics if the index `index` is larger than the length of the collection, or
-    /// if the collection is full.
+    /// if the collection is full, i.e. `self.len() == self.capacity()`.
     ///
     /// # Examples
     ///
@@ -2107,7 +2127,7 @@ where
     /// This method satisfies:
     ///
     /// ```text
-    /// { index < vec_before.len() }
+    /// { index < vec_before.len() ∧ vec_before.len() < vec_before.capacity() }
     /// vec.shift_insert(index, value)
     /// {
     ///     vec_after.len() = vec_before.len() + 1
@@ -2116,13 +2136,21 @@ where
     ///     ∧ (∀ i ∈ [index, vec_before.len()). vec_after[i + 1] = vec_before[i])
     /// }
     ///
-    /// { index = vec_before.len() }
+    /// { index = vec_before.len() ∧ vec_before.len() < vec_before.capacity() }
     /// vec.shift_insert(index, value)
     /// {
     ///     vec_after.len() = vec_before.len() + 1
     ///     ∧ vec_after[index] = value
     ///     ∧ (∀ i ∈ [0, vec_before.len()). vec_after[i] = vec_before[i])
     /// }
+    ///
+    /// { index ≤ vec_before.len() ∧ vec_before.len() = vec_before.capacity() }
+    /// vec.shift_index(index, value)
+    /// { ⊥ }
+    ///
+    /// { index > vec_before.len() }
+    /// vec.shift_insert(index, value)
+    /// { ⊥ }
     /// ```
     ///
     /// where `{P} S {Q}` is the Hoare triple indicating how this method acts on `vec`.
@@ -2249,6 +2277,10 @@ where
     ///     ∧ vec_after.len() = vec_before.len() - 1
     ///     ∧ (∀ i ∈ [0, vec_before.len() - 1). vec_after[i] = vec_before[i])
     /// }
+    ///
+    /// { index ≥ vec_before.len() }
+    /// vec.swap_remove(index, value)
+    /// { ⊥ }
     /// ```
     ///
     /// where `{P} S {Q}` is the Hoare triple indicating how this method acts on `vec`.
@@ -2260,7 +2292,7 @@ where
     /// # Panics
     ///
     /// This method panics if the index `index` is larger than the length of the collection. In
-    /// particular, the method panics when `self` is empty.
+    /// particular, this method panics when the bounded vector is empty.
     ///
     /// # Examples
     ///
@@ -2359,6 +2391,10 @@ where
     ///     ∧ (∀ i ∈ [0, index). vec_after[i] = vec_before[i])
     ///     ∧ (∀ i ∈ [index, vec_after.len()). vec_after[i] = vec_before[i + 1])
     /// }
+    ///
+    /// { index ≥ vec_before.len() }
+    /// vec.shift_remove(index)
+    /// { ⊥ }
     /// ```
     ///
     /// where `{P} S {Q}` is the Hoare triple indicating how this method acts on `vec`.
@@ -2849,6 +2885,10 @@ where
 
     /// Appends all elements from a slice to the bounded vector.
     ///
+    /// # Panics
+    ///
+    /// This method panics if `self.len() + slice.len() > self.capacity()`.
+    ///
     /// # Examples
     ///
     /// ```
@@ -2904,7 +2944,7 @@ where
     ///
     /// # Panics
     ///
-    /// This method panics if the new capacity exceeds `isize::MAX` _bytes_.
+    /// This method panics if the new length exceeds the capacity of the bounded vector.
     ///
     /// # Examples
     ///
@@ -3029,7 +3069,7 @@ where
     ///
     /// # Panics
     ///
-    /// This method panics if the new capacity exceeds `isize::MAX` _bytes_.
+    /// This method panics if the new length exceeds the capacity of the bounded vector.
     ///
     /// # Examples
     ///
@@ -3592,7 +3632,7 @@ where
     ///
     /// ```text
     /// { true }
-    /// vec.dedup_key(key)
+    /// vec.dedup_by_key(key)
     /// {
     ///     vec_after.len() ≤ vec_before.len()
     ///     ∧ (∃ g: [0, vec_after.len()) → [0, vec_before.len()).
