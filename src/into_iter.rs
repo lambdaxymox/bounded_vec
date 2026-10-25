@@ -20,9 +20,12 @@ use allocator_api2::boxed::Box;
 
 use core::fmt;
 use core::iter;
-use core::mem::{ManuallyDrop, MaybeUninit};
-use core::ptr::NonNull;
+use core::mem::{
+    ManuallyDrop,
+    MaybeUninit,
+};
 use core::ops;
+use core::ptr::NonNull;
 use core::slice;
 
 #[inline(always)]
@@ -451,11 +454,7 @@ where
     */
 }
 
-impl<T, A> iter::FusedIterator for IntoIter<T, A>
-where
-    A: alloc::Allocator,
-{
-}
+impl<T, A> iter::FusedIterator for IntoIter<T, A> where A: alloc::Allocator {}
 
 impl<T, A> Clone for IntoIter<T, A>
 where

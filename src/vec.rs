@@ -4,8 +4,8 @@
 //   * Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
 //   * MIT license (http://opensource.org/licenses/MIT)
 // at your option.
-use crate::into_iter::IntoIter;
 use crate::extract_if::ExtractIf;
+use crate::into_iter::IntoIter;
 
 #[cfg(feature = "nightly")]
 use alloc_crate::alloc;
@@ -21,7 +21,10 @@ use allocator_api2::boxed::Box;
 
 use core::fmt;
 use core::hash;
-use core::mem::{ManuallyDrop, MaybeUninit};
+use core::mem::{
+    ManuallyDrop,
+    MaybeUninit,
+};
 use core::ops;
 use core::ptr::NonNull;
 use core::slice;
@@ -146,10 +149,7 @@ where
         let layout = core::alloc::Layout::array::<T>(capacity).expect("invalid layout");
         let raw_ptr = alloc.allocate(layout).expect("`BoundedVec` allocation failed");
 
-        let slice_ptr = core::ptr::slice_from_raw_parts_mut(
-            raw_ptr.as_ptr().cast::<MaybeUninit<T>>(),
-            capacity,
-        );
+        let slice_ptr = core::ptr::slice_from_raw_parts_mut(raw_ptr.as_ptr().cast::<MaybeUninit<T>>(), capacity);
 
         let inner = unsafe { Box::from_raw_in(slice_ptr, alloc) };
 
@@ -1035,9 +1035,7 @@ where
     #[inline]
     pub fn as_slice(&self) -> &[T] {
         // SAFETY: The first `self.length` elements have been initialized.
-        unsafe {
-            slice::from_raw_parts(self.inner.as_ptr().cast::<T>(), self.length)
-        }
+        unsafe { slice::from_raw_parts(self.inner.as_ptr().cast::<T>(), self.length) }
     }
 
     /// Returns a mutable slice of the elements of a bounded vector.
@@ -1097,9 +1095,7 @@ where
     #[inline]
     pub fn as_mut_slice(&mut self) -> &mut [T] {
         // SAFETY: The first `self.length` elements have been initialized.
-        unsafe {
-            slice::from_raw_parts_mut(self.inner.as_mut_ptr().cast::<T>(), self.length)
-        }
+        unsafe { slice::from_raw_parts_mut(self.inner.as_mut_ptr().cast::<T>(), self.length) }
     }
 
     /// Returns a raw pointer to the vector's buffer, or a dangling raw pointer valid for zero
@@ -2757,7 +2753,7 @@ where
     #[inline]
     fn extend_from_iter<I>(&mut self, iterator: I)
     where
-        I: Iterator<Item=T>,
+        I: Iterator<Item = T>,
     {
         for item in iterator {
             self.push(item);
@@ -3966,7 +3962,9 @@ where
             #[inline]
             fn drop(&mut self) {
                 // SAFETY: The elements of the bounded vector were initialized before calling `drop`.
-                unsafe { self.vec.set_len(self.initialized_count); }
+                unsafe {
+                    self.vec.set_len(self.initialized_count);
+                }
             }
         }
 
@@ -3985,7 +3983,9 @@ where
 
         // SAFETY: The bounded vector was allocated and initialized with the same capacity as the
         // original bounded vector, and with the same length as the original bound vector.
-        unsafe { vec.set_len(slice.len()); }
+        unsafe {
+            vec.set_len(slice.len());
+        }
 
         vec
     }
@@ -4040,7 +4040,6 @@ where
         self
     }
 }
-
 
 impl<T, A> ops::Deref for BoundedVec<T, A>
 where
@@ -4144,7 +4143,9 @@ where
 
         // SAFETY: The bounded vector was allocated and initialized with the same capacity as the
         // original bounded vector, and with the same length as the original bound vector.
-        unsafe { cloned_vec.set_len(self.len()); }
+        unsafe {
+            cloned_vec.set_len(self.len());
+        }
 
         cloned_vec
     }
@@ -4170,10 +4171,7 @@ where
 {
     fn drop(&mut self) {
         unsafe {
-            let initialized_slice = core::ptr::slice_from_raw_parts_mut(
-                self.inner.as_mut_ptr().cast::<T>(),
-                self.length,
-            );
+            let initialized_slice = core::ptr::slice_from_raw_parts_mut(self.inner.as_mut_ptr().cast::<T>(), self.length);
 
             core::ptr::drop_in_place(initialized_slice);
         }
@@ -4229,11 +4227,9 @@ impl<T, const N: usize> From<[T; N]> for BoundedVec<T, alloc::Global> {
         let length = array.len();
         let mut me = ManuallyDrop::new(Box::new(array));
         let data = me.as_mut_ptr() as *mut MaybeUninit<T>;
-        let inner = unsafe {
-            Box::from_raw(slice::from_raw_parts_mut(data, length))
-        };
+        let inner = unsafe { Box::from_raw(slice::from_raw_parts_mut(data, length)) };
 
-        Self { inner, length, }
+        Self { inner, length }
     }
 }
 
@@ -4246,9 +4242,7 @@ where
         let length = boxed.len();
         let (data, alloc) = Box::into_raw_with_allocator(boxed);
         let raw_ptr = data.cast::<MaybeUninit<T>>();
-        let inner = unsafe {
-            Box::from_raw_in(slice::from_raw_parts_mut(raw_ptr, length), alloc)
-        };
+        let inner = unsafe { Box::from_raw_in(slice::from_raw_parts_mut(raw_ptr, length), alloc) };
 
         Self { inner, length }
     }

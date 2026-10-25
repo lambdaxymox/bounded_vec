@@ -99,14 +99,7 @@ generate_props!(
     strategy_bounded_vec_max_len,
     strategy_single_value
 );
-generate_props!(
-    u8,
-    u8,
-    alloc::Global,
-    32,
-    strategy_bounded_vec_max_len,
-    strategy_single_value
-);
+generate_props!(u8, u8, alloc::Global, 32, strategy_bounded_vec_max_len, strategy_single_value);
 generate_props!(
     u16,
     u16,

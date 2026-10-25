@@ -491,9 +491,7 @@ fn test_bounded_vec_dedup() {
         BoundedVec::from(&[1_i32, 2_i32, 3_i32]),
     );
     test_case(
-        BoundedVec::from(&[
-            1_i32, 1_i32, 2_i32, 2_i32, 2_i32, 3_i32, 3_i32, 4_i32, 5_i32, 5_i32, 5_i32, 6_i32, 7_i32, 7_i32,
-        ]),
+        BoundedVec::from(&[1_i32, 1_i32, 2_i32, 2_i32, 2_i32, 3_i32, 3_i32, 4_i32, 5_i32, 5_i32, 5_i32, 6_i32, 7_i32, 7_i32]),
         BoundedVec::from(&[1_i32, 2_i32, 3_i32, 4_i32, 5_i32, 6_i32, 7_i32]),
     );
 }
@@ -833,7 +831,7 @@ fn test_bounded_vec_into_iter_partial2() {
         String::from("garply"),
     ]);
     let expected = BoundedVec::from([String::from("foo"), String::from("bar")]);
-    let mut result =BoundedVec::with_capacity(2);
+    let mut result = BoundedVec::with_capacity(2);
     for value in vec.clone().into_iter().take(2) {
         result.push(value);
     }

@@ -13,19 +13,13 @@ use allocator_api2::alloc;
 
 use proptest::prelude::*;
 
-fn prop_extend_from_slice_values<T, A>(
-    values: BoundedVec<T, A>,
-    extension_values: BoundedVec<T, A>,
-) -> Result<(), TestCaseError>
+fn prop_extend_from_slice_values<T, A>(values: BoundedVec<T, A>, extension_values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
     T: any::Any + PartialEq + Clone + Default + fmt::Debug,
     A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
 {
     let result = {
-        let mut _result = BoundedVec::with_capacity_in(
-            values.len() + extension_values.len(),
-            values.allocator().clone(),
-        );
+        let mut _result = BoundedVec::with_capacity_in(values.len() + extension_values.len(), values.allocator().clone());
         _result.extend(values.iter().cloned());
         _result.extend_from_slice(extension_values.as_slice());
         _result
@@ -42,19 +36,13 @@ where
     Ok(())
 }
 
-fn prop_extend_from_slice_len<T, A>(
-    values: BoundedVec<T, A>,
-    extension_values: BoundedVec<T, A>,
-) -> Result<(), TestCaseError>
+fn prop_extend_from_slice_len<T, A>(values: BoundedVec<T, A>, extension_values: BoundedVec<T, A>) -> Result<(), TestCaseError>
 where
     T: any::Any + PartialEq + Clone + Default + fmt::Debug,
     A: any::Any + alloc::Allocator + Send + Sync + Clone + Default + fmt::Debug,
 {
     let result = {
-        let mut _result = BoundedVec::with_capacity_in(
-            values.len() + extension_values.len(),
-            values.allocator().clone(),
-        );
+        let mut _result = BoundedVec::with_capacity_in(values.len() + extension_values.len(), values.allocator().clone());
         _result.extend(values.iter().cloned());
         _result.extend_from_slice(&extension_values);
         _result
