@@ -6,10 +6,10 @@
 // at your option.
 use crate::vec::BoundedVec;
 
+use alloc_crate::alloc;
 use core::fmt;
 use core::ops;
 use core::slice;
-use alloc_crate::alloc;
 
 /// An iterator that extracts the elements of a vector that satisfy a predicate.
 ///

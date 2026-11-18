@@ -6,6 +6,8 @@
 // at your option.
 use crate::vec::BoundedVec;
 
+use alloc_crate::alloc;
+use alloc_crate::boxed::Box;
 use core::fmt;
 use core::iter;
 use core::mem::{
@@ -15,8 +17,6 @@ use core::mem::{
 use core::ops;
 use core::ptr::NonNull;
 use core::slice;
-use alloc_crate::alloc;
-use alloc_crate::boxed::Box;
 
 #[inline(always)]
 const fn assuming_non_null<T>(item: *const T) -> NonNull<T> {
