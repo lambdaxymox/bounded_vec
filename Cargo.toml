@@ -1,6 +1,6 @@
 [package]
 name = "bounded_vec"
-version = "2.0.0"
+version = "2.0.1"
 edition = "2024"
 authors = ["LambdaXymox <lambda.xymox@gmail.com>"]
 description = "A library for working with bounded capacity growable arrays."
