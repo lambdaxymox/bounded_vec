@@ -1,6 +1,6 @@
 use bounded_vec::BoundedVec;
 
-use std::cell::RefCell;
+use core::cell::RefCell;
 use std::panic;
 use std::panic::AssertUnwindSafe;
 use std::rc::Rc;

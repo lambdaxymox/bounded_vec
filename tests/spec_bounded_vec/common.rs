@@ -2,16 +2,11 @@ use bounded_vec::BoundedVec;
 
 use core::fmt;
 use core::ops;
+use std::alloc;
 use std::string::{
     String,
     ToString,
 };
-
-#[cfg(feature = "nightly")]
-use std::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::alloc;
 
 use proptest::prelude::*;
 

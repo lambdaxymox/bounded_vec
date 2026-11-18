@@ -1,13 +1,8 @@
 use bounded_vec::BoundedVec;
 
-use std::cell::RefCell;
-use std::rc::Rc;
-
-#[cfg(feature = "nightly")]
+use core::cell::RefCell;
 use std::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::alloc;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct DropCounter {

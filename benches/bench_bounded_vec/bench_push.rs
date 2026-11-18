@@ -5,12 +5,6 @@ use criterion::{
     criterion_group,
 };
 
-#[cfg(feature = "nightly")]
-use alloc_crate::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::alloc;
-
 fn bench_bounded_vec_push(c: &mut Criterion) {
     let dummy_data = 0_i32;
 

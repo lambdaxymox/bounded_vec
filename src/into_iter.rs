@@ -6,18 +6,6 @@
 // at your option.
 use crate::vec::BoundedVec;
 
-#[cfg(feature = "nightly")]
-use alloc_crate::alloc;
-
-#[cfg(feature = "nightly")]
-use alloc_crate::boxed::Box;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::boxed::Box;
-
 use core::fmt;
 use core::iter;
 use core::mem::{
@@ -27,6 +15,8 @@ use core::mem::{
 use core::ops;
 use core::ptr::NonNull;
 use core::slice;
+use alloc_crate::alloc;
+use alloc_crate::boxed::Box;
 
 #[inline(always)]
 const fn assuming_non_null<T>(item: *const T) -> NonNull<T> {
@@ -42,14 +32,9 @@ const fn assuming_non_null<T>(item: *const T) -> NonNull<T> {
 /// Using a moving iterator on a bounded vector.
 ///
 /// ```
-/// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
 /// # use bounded_vec::BoundedVec;
 /// #
-/// # #[cfg(feature = "nightly")]
 /// # use std::alloc::Global;
-/// #
-/// # #[cfg(not(feature = "nightly"))]
-/// # use allocator_api2::alloc::Global;
 /// #
 /// let mut vec: BoundedVec<i32> = BoundedVec::from([1, 2, 3, 4, 5]);
 ///
@@ -116,14 +101,9 @@ where
     /// Using a moving iterator on a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec: BoundedVec<i32> = BoundedVec::from([1, 2, 3, 4, 5]);
     /// let mut iterator = vec.into_iter();
@@ -155,14 +135,9 @@ where
     /// Using a moving iterator on a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec: BoundedVec<i32> = BoundedVec::from([1, 2, 3, 4, 5]);
     /// let mut iterator = vec.into_iter();
@@ -190,14 +165,9 @@ where
     /// Using a moving iterator on a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec: BoundedVec<i32> = BoundedVec::from([1, 2, 3, 4, 5]);
     /// let mut iterator = vec.into_iter();

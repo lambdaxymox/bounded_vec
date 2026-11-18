@@ -7,18 +7,6 @@
 use crate::extract_if::ExtractIf;
 use crate::into_iter::IntoIter;
 
-#[cfg(feature = "nightly")]
-use alloc_crate::alloc;
-
-#[cfg(feature = "nightly")]
-use alloc_crate::boxed::Box;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::boxed::Box;
-
 use core::fmt;
 use core::hash;
 use core::mem::{
@@ -28,6 +16,8 @@ use core::mem::{
 use core::ops;
 use core::ptr::NonNull;
 use core::slice;
+use alloc_crate::alloc;
+use alloc_crate::boxed::Box;
 
 /// A bounded growable array type.
 ///
@@ -50,14 +40,9 @@ use core::slice;
 /// # Examples
 ///
 /// ```
-/// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
 /// # use bounded_vec::BoundedVec;
 /// #
-/// # #[cfg(feature = "nightly")]
 /// # use std::alloc::Global;
-/// #
-/// # #[cfg(not(feature = "nightly"))]
-/// # use allocator_api2::alloc::Global;
 /// #
 /// let capacity = 3;
 /// let mut vec: BoundedVec<i32, Global> = BoundedVec::with_capacity(capacity);
@@ -105,14 +90,9 @@ where
     /// Creating a bounded vector with capacity `capacity > 0`.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let capacity = 32;
     /// let vec: BoundedVec<i32, Global> = BoundedVec::with_capacity_in(capacity, Global);
@@ -124,14 +104,9 @@ where
     /// Creating a bounded vector with capacity `capacity == 0`.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec: BoundedVec<i32, Global> = BoundedVec::with_capacity_in(0, Global);
     ///
@@ -191,16 +166,11 @@ where
     /// Using memory that was allocated by a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
+    /// #
     /// # use core::ptr;
     /// # use core::mem;
-    /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let original_capacity = 16;
     /// let mut original_vec = BoundedVec::with_capacity(original_capacity);
@@ -267,15 +237,10 @@ where
     /// Using memory that was allocated outside a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
+    /// #
     /// # use core::ptr::NonNull;
-    /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::{Allocator, Layout, Global};
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::{Allocator, Layout, Global};
     /// #
     /// let value = 1_000_000;
     /// let layout = Layout::array::<u32>(16).unwrap();
@@ -359,17 +324,12 @@ where
     /// Using memory that was allocated by a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
+    /// #
     /// # use core::ptr::NonNull;
     /// # use core::ptr;
     /// # use core::mem;
-    /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let original_capacity = 16;
     /// let mut original_vec = BoundedVec::with_capacity(original_capacity);
@@ -436,15 +396,10 @@ where
     /// Using memory that was allocated outside a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
+    /// #
     /// # use core::ptr::NonNull;
-    /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::{Allocator, Layout, Global};
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::{Allocator, Layout, Global};
     /// #
     /// let value = 1_000_000;
     /// let layout = Layout::array::<u32>(16).unwrap();
@@ -513,14 +468,9 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// Creating a bounded vector with capacity `capacity > 0`.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let capacity = 32;
     /// let vec: BoundedVec<i32> = BoundedVec::with_capacity(capacity);
@@ -532,14 +482,9 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// Creating a bounded vector with capacity `capacity == 0`.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec: BoundedVec<i32> = BoundedVec::with_capacity(0);
     ///
@@ -584,17 +529,12 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// Using memory that was allocated by a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
+    /// #
     /// # use core::ptr::NonNull;
     /// # use core::ptr;
     /// # use core::mem;
-    /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let original_capacity = 16;
     /// let mut original_vec = BoundedVec::with_capacity(original_capacity);
@@ -660,15 +600,10 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// Using memory that was allocated outside a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
+    /// #
     /// # use core::ptr::NonNull;
-    /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::{Allocator, Layout, Global};
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::{Allocator, Layout, Global};
     /// #
     /// let value = 1_000_000;
     /// let layout = Layout::array::<u32>(16).unwrap();
@@ -742,17 +677,12 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// Using memory that was allocated by a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
+    /// #
     /// # use core::ptr::NonNull;
     /// # use core::ptr;
     /// # use core::mem;
-    /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let original_capacity = 16;
     /// let mut original_vec = BoundedVec::with_capacity(original_capacity);
@@ -818,15 +748,10 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// Using memory that was allocated outside a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
+    /// #
     /// # use core::ptr::NonNull;
-    /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::{Allocator, Layout, Global};
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::{Allocator, Layout, Global};
     /// #
     /// let value = 1_000_000;
     /// let layout = Layout::array::<u32>(16).unwrap();
@@ -879,14 +804,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let capacity = 32;
     /// let mut vec: BoundedVec<i32, Global> = BoundedVec::with_capacity_in(capacity, Global);
@@ -918,14 +838,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let len = 32;
     /// let mut vec: BoundedVec<i32, Global> = BoundedVec::with_capacity_in(len, Global);
@@ -957,14 +872,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec: BoundedVec<i32, Global> = BoundedVec::with_capacity_in(1, Global);
     ///
@@ -984,14 +894,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec: BoundedVec<i32> = BoundedVec::with_capacity(11);
     ///
@@ -1014,14 +919,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let array: [i32; 3] = [9, 28, 37];
     /// let vec = BoundedVec::from(array);
@@ -1045,14 +945,9 @@ where
     /// Getting a mutable slice of a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut array: [i32; 3] = [9, 28, 37];
     /// let mut vec = BoundedVec::from(array);
@@ -1067,14 +962,9 @@ where
     /// Getting and mutating a mutable slice of a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut array: [i32; 3] = [9, 28, 37];
     /// let mut vec = BoundedVec::from(array);
@@ -1123,14 +1013,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec = BoundedVec::from([1, 2, 4, 8]);
     /// let ptr = vec.as_ptr();
@@ -1147,14 +1032,9 @@ where
     /// Due to the aliasing guarantee, the following code is legal:
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([0, 1, 2]);
     ///
@@ -1198,14 +1078,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// // Allocate vector big enough for 4 elements.
     /// let length = 4;
@@ -1226,14 +1101,9 @@ where
     /// Due to the aliasing guarantee, the following code is legal:
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec: BoundedVec<i32> = BoundedVec::with_capacity(4);
     /// vec.push(0);
@@ -1277,14 +1147,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// // Allocate vector big enough for 4 elements.
     /// let length = 4;
@@ -1305,14 +1170,9 @@ where
     /// Due to the aliasing guarantee, the following code is legal:
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::with_capacity(4);
     ///
@@ -1352,14 +1212,9 @@ where
     /// run time of the program. Dropping this reference will leak memory.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec = BoundedVec::from([1, 2, 3, 4, 5]);
     /// #
@@ -1404,14 +1259,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let array: [i32; 3] = [-1, 0, 1];
     /// let vec = BoundedVec::from(array);
@@ -1454,14 +1304,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let array: [i32; 3] = [-1, 0, 1];
     /// let vec = BoundedVec::from(array);
@@ -1508,14 +1353,9 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let array: [i32; 3] = [-1, 0, 1];
     /// let vec = BoundedVec::from(array);
@@ -1557,14 +1397,9 @@ impl<T> BoundedVec<T, alloc::Global> {
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let array: [i32; 3] = [-1, 0, 1];
     /// let vec = BoundedVec::from(array);
@@ -1635,14 +1470,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::with_capacity(4);
     ///
@@ -1723,14 +1553,9 @@ where
     /// Pushing elements to the vector within the capacity of the vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let min_capacity = 4;
     /// let mut vec = BoundedVec::with_capacity(min_capacity);
@@ -1747,14 +1572,9 @@ where
     /// Trying to push elements past the capacity of the vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let min_capacity = 4;
     /// let mut vec = BoundedVec::with_capacity(min_capacity);
@@ -1824,14 +1644,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([1, 2, 3]);
     ///
@@ -1869,14 +1684,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([
     ///     "foo",
@@ -1938,14 +1748,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::with_capacity(10);
     ///
@@ -2029,14 +1834,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::with_capacity(3);
     ///
@@ -2166,14 +1966,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::with_capacity(10);
     ///
@@ -2295,14 +2090,9 @@ where
     /// Showing how swap removal happens.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec = BoundedVec::from([1, 2, 3, i32::MAX]);
     /// {
@@ -2411,14 +2201,9 @@ where
     /// Showing how shift removal happens.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let vec = BoundedVec::from([1, 2, 3, i32::MAX]);
     /// {
@@ -2503,15 +2288,10 @@ where
     /// Safely reducing the length of a bounded vector with this method.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// # use core::ptr;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// struct DropCounter {}
     ///
@@ -2551,15 +2331,10 @@ where
     /// memory.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// # use core::ptr;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// struct DropCounter {}
     ///
@@ -2595,15 +2370,10 @@ where
     /// Safely extending the length of a bounded vector with this method.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// # use core::ptr;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let capacity = 4;
     /// let mut vec = BoundedVec::with_capacity(capacity);
@@ -2644,14 +2414,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::with_capacity(10);
     ///
@@ -2784,14 +2549,9 @@ where
     /// Using this method is equivalent to the following code:
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// # let some_predicate = |x: &mut i32| { *x % 2 == 1 };
     /// # let mut vec = BoundedVec::from([0, 1, 2, 3, 4, 5, 6]);
@@ -2834,14 +2594,9 @@ where
     /// Splitting a vector into even and odd values, reusing the original vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::{IntoIter, BoundedVec};
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut numbers = BoundedVec::from([1, 2, 3, 4, 5, 6, 8, 9, 11, 13, 14, 15]);
     /// let mut evens = BoundedVec::with_capacity(numbers.len());
@@ -2855,14 +2610,9 @@ where
     /// Using the range argument to only process a part of the vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::{IntoIter, BoundedVec};
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut items = BoundedVec::from([0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 2]);
     /// let mut ones = BoundedVec::with_capacity(items.len());
@@ -2888,14 +2638,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let array: [i32; 6] = [1, 2, 3, 4, 5, 6];
     /// let extension: [i32; 4] = [7, 8, 9, 10];
@@ -2947,14 +2692,9 @@ where
     /// Extending a bounded vector with a default value.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::with_capacity(14);
     /// vec.extend([
@@ -2994,14 +2734,9 @@ where
     /// Shrinking a bounded vector with a default value.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([
     ///     "spam",
@@ -3072,14 +2807,9 @@ where
     /// Resizing to the same size does not change the collection.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let length = 3;
     /// let mut vec = {
@@ -3102,14 +2832,9 @@ where
     /// Resizing a collection to a larger collection.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::with_capacity(10);
     ///
@@ -3145,14 +2870,9 @@ where
     /// Truncating a bounded vector when `len < self.len()`.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([1, 2, 3, 4, 5, 6]);
     /// vec.truncate(2);
@@ -3164,14 +2884,9 @@ where
     /// No truncation occurs when `len == self.len()`.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let array: [i32; 6] = [1, 2, 3, 4, 5, 6];
     /// let mut vec = BoundedVec::from(array);
@@ -3184,14 +2899,9 @@ where
     /// No truncation occurs when `len > self.len()`.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let array: [i32; 6] = [1, 2, 3, 4, 5, 6];
     /// let mut vec = BoundedVec::from(array);
@@ -3209,14 +2919,9 @@ where
     /// Truncating when `len == 0` is equivalent to calling the [`clear`] method.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([1, 2, 3, 4, 5, 6]);
     /// vec.truncate(0);
@@ -3299,14 +3004,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([1, 2, 3, 4, 5, 6]);
     /// vec.retain(|&x| x % 2 == 0);
@@ -3374,14 +3074,9 @@ where
     /// # Examples
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([1, 2, 3, 4, 5, 6]);
     /// vec.retain_mut(|x| if *x <= 3 {
@@ -3546,14 +3241,9 @@ where
     /// Deduplicating an unsorted bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([1, 2, 3, 2, 2, 2, 6, 4, 4]);
     /// vec.dedup();
@@ -3564,14 +3254,9 @@ where
     /// Deduplicating a sorted bounded vector with duplicate values.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([1, 2, 3, 3, 3, 3, 4, 4, 4, 5]);
     /// vec.dedup();
@@ -3582,14 +3267,9 @@ where
     /// Deduplicating a sorted bounded vector with no duplicate values does nothing.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from( [1, 2, 3, 4, 5]);
     /// vec.dedup();
@@ -3645,14 +3325,9 @@ where
     /// Deduplicating an unsorted bounded vector by key.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([10, 20, 21, 30, 20]);
     /// vec.dedup_by_key(|i| *i / 10);
@@ -3663,14 +3338,9 @@ where
     /// Deduplicating a sorted bounded vector by key with duplicate values.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([10, 20, 20, 21, 30, 30, 30, 40]);
     /// vec.dedup_by_key(|i| *i / 10);
@@ -3731,14 +3401,9 @@ where
     /// Deduplicating an unsorted bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([
     ///     "foo",
@@ -3755,14 +3420,9 @@ where
     /// Deduplicating a sorted bounded vector with duplicate values.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// let mut vec = BoundedVec::from([
     ///     "foo",
@@ -4063,6 +3723,7 @@ where
     }
 }
 
+/*
 impl<T, A> Default for BoundedVec<T, A>
 where
     A: alloc::Allocator + Default,
@@ -4074,6 +3735,7 @@ where
         }
     }
 }
+*/
 
 impl<T, I, A> ops::Index<I> for BoundedVec<T, A>
 where

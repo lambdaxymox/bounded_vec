@@ -1,10 +1,6 @@
 use bounded_vec::BoundedVec;
 
-#[cfg(feature = "nightly")]
 use std::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::alloc;
 
 #[test]
 fn test_bounded_vec_empty() {

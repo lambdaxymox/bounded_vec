@@ -3,13 +3,8 @@ use bounded_vec::BoundedVec;
 
 use core::fmt;
 use core::mem;
-use std::string::String;
-
-#[cfg(feature = "nightly")]
 use std::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::alloc;
+use std::string::String;
 
 use proptest::prelude::*;
 

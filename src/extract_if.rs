@@ -6,15 +6,10 @@
 // at your option.
 use crate::vec::BoundedVec;
 
-#[cfg(feature = "nightly")]
-use alloc_crate::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::alloc;
-
 use core::fmt;
 use core::ops;
 use core::slice;
+use alloc_crate::alloc;
 
 /// An iterator that extracts the elements of a vector that satisfy a predicate.
 ///
@@ -25,14 +20,9 @@ use core::slice;
 /// Using an extracting iterator on a bounded vector.
 ///
 /// ```
-/// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
 /// # use bounded_vec::BoundedVec;
 /// #
-/// # #[cfg(feature = "nightly")]
 /// # use std::alloc::Global;
-/// #
-/// # #[cfg(not(feature = "nightly"))]
-/// # use allocator_api2::alloc::Global;
 /// #
 /// fn is_even(value: &mut i32) -> bool {
 ///     *value % 2 == 0
@@ -135,14 +125,9 @@ where
     /// Getting the allocator from the extracting iterator of a bounded vector.
     ///
     /// ```
-    /// # #![cfg_attr(feature = "nightly", feature(allocator_api))]
     /// # use bounded_vec::BoundedVec;
     /// #
-    /// # #[cfg(feature = "nightly")]
     /// # use std::alloc::Global;
-    /// #
-    /// # #[cfg(not(feature = "nightly"))]
-    /// # use allocator_api2::alloc::Global;
     /// #
     /// fn is_even(value: &mut i32) -> bool {
     ///     *value % 2 == 0

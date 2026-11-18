@@ -2,13 +2,8 @@ use crate::spec_bounded_vec::common::strategy_bounded_vec_max_len;
 use bounded_vec::BoundedVec;
 
 use core::fmt;
-use std::string::String;
-
-#[cfg(feature = "nightly")]
 use std::alloc;
-
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::alloc;
+use std::string::String;
 
 use proptest::prelude::*;
 
