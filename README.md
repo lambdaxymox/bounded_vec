@@ -14,7 +14,7 @@ your `Cargo.toml` file
 
 ```toml
 [dependencies]
-bounded_vec = "2.0.1"
+bounded_vec = "2.1.0"
 ```
 
 Optionally, you can add the crate declaration
