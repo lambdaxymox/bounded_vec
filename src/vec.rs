@@ -3944,7 +3944,6 @@ where
     }
 }
 
-/*
 impl<T> FromIterator<T> for BoundedVec<T, alloc::Global> {
     #[inline]
     #[track_caller]
@@ -3964,7 +3963,6 @@ impl<T> FromIterator<T> for BoundedVec<T, alloc::Global> {
         vec
     }
 }
-*/
 
 impl<T, A> IntoIterator for BoundedVec<T, A>
 where
